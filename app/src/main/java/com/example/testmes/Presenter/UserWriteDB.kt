@@ -19,7 +19,6 @@ class UserWriteDB(val mAuth: FirebaseAuth, val userToDBView: UserToDBView, val a
         } else {
             var ref = database.reference.child("Users").child(Firebase.auth.currentUser?.uid.toString())
             ref.push().setValue(user)
-
             userToDBView.writeUserDbSuccess("Успешно зарегистрировались")
         }
     }

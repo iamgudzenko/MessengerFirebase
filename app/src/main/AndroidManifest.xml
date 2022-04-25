@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TestMes">
         <activity
+            android:name=".MessageActivity"
+            android:exported="false"/>
+        <activity
             android:name=".LoginActivity"
             android:exported="false" />
         <activity

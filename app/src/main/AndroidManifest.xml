@@ -10,8 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TestMes">
         <activity
+            android:name=".Nav"
+            android:exported="false"
+            android:label="@string/title_activity_nav"
+            android:theme="@style/Theme.TestMes.NoActionBar" />
+        <activity
             android:name=".MessageActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".LoginActivity"
             android:exported="false" />

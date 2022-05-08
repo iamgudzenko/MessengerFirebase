@@ -9,4 +9,5 @@
     <color name="textMessageColor">#424242</color>
     <color name="white">#FFFFFFFF</color>
     <color name="mess">#D6F1FF</color>
+    <color name="mess2">#E8DAF8</color>
 </resources>

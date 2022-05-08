@@ -1,25 +1,22 @@
 package com.example.testmes.Presenter
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.example.testmes.Model.Chats
 import com.example.testmes.Model.Messages
 import com.example.testmes.View.IMessageView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.database.*
 
 class MessagesPresenter(val messageView: IMessageView) : IMessagesPresenter {
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
     val database = FirebaseDatabase.getInstance()
     var ref = database.reference
 
-    override fun loadingMessages(loginUserChatWith:String) {
+    override fun loadingMessages(loginUserChatWith:String, loginCurrentUser:String) {
         ref = FirebaseDatabase.getInstance().reference
-        ref.child("Users").child(auth.currentUser?.uid.toString()).child("Chats").orderByChild("loginUserChatWith").equalTo(loginUserChatWith).addValueEventListener(object : ValueEventListener {
+        ref.child("Chats").child(loginCurrentUser).orderByChild("loginUserChatWith").equalTo(loginUserChatWith).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if(dataSnapshot.children.count() == 0) {
                     messageView.loadingMessagesError("Empty!")
@@ -39,25 +36,56 @@ class MessagesPresenter(val messageView: IMessageView) : IMessagesPresenter {
 
     override fun sendMessage(loginUserChatWith:String, loginUserOwner: String, textMessage: String) {
         ref = FirebaseDatabase.getInstance().reference
-        ref.child("Users").child(auth.currentUser?.uid.toString()).child("Chats").orderByChild("loginUserChatWith").equalTo(loginUserChatWith).addListenerForSingleValueEvent(object : ValueEventListener {
+        ref.child("Chats").child(loginUserOwner).orderByChild("loginUserChatWith").equalTo(loginUserChatWith).addListenerForSingleValueEvent(object : ValueEventListener {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if(dataSnapshot.childrenCount.toInt() == 0) {
+                    val newChatCurrentUser = Chats(null, loginUserOwner, mutableListOf(Messages(loginUserOwner, textMessage, ServerValue.TIMESTAMP)))
+                    val newChatWithUser = Chats(null, loginUserChatWith, mutableListOf(Messages(loginUserOwner, textMessage, ServerValue.TIMESTAMP)))
+
+                    ref.child("Chats").child(loginUserChatWith).push().setValue(newChatCurrentUser)
+                    ref.child("Chats").child(loginUserOwner).push().setValue(newChatWithUser)
+                }
+                Log.e("sendNewChats", dataSnapshot.childrenCount.toString())
+                for (ds in dataSnapshot.children) {
+                    val chats: Chats? = ds.getValue(Chats::class.java)
+                    val messages = Messages(loginUserOwner, textMessage, ServerValue.TIMESTAMP)
+                    val c = chats?.listMessages?.size ?: 0
+                    addChatstoDb(loginUserChatWith, loginUserOwner, textMessage)
+                    writeChats(messages, c, ds)
+
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                messageView.sendMessagesError(error.toString())
+            }
+
+        })
+    }
+
+    fun writeChats(messages: Messages, c: Int?, ds:DataSnapshot){
+        ds.ref.child("listMessages").child(c.toString()).setValue(messages)
+    }
+
+    fun addChatstoDb(loginUserChatWith:String, loginUserOwner: String, textMessage: String) {
+        ref = FirebaseDatabase.getInstance().reference
+        ref.child("Chats").child(loginUserChatWith).orderByChild("loginUserChatWith").equalTo(loginUserOwner).addListenerForSingleValueEvent(object : ValueEventListener {
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (ds in dataSnapshot.children) {
                     val chats: Chats? = ds.getValue(Chats::class.java)
-                    val messages: Messages = Messages(loginUserOwner, textMessage)
-                    //chats?.listMessages?.toMutableList()?.add(messages)
+                    val messages = Messages(loginUserChatWith, textMessage, ServerValue.TIMESTAMP)
                     val c = chats?.listMessages?.size ?: 0
                     writeChats(messages, c, ds)
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                messageView.loadingMessagesError(error.toString())
+                messageView.sendMessagesError(error.toString())
             }
 
         })
-    }
-    fun writeChats(messages: Messages, c: Int?, ds:DataSnapshot){
-        ds.ref.child("listMessages").child(c.toString()).setValue(messages)
     }
 
 }

@@ -1,6 +1,20 @@
 package com.example.testmes.Model
 
-import com.google.firebase.Timestamp
+import com.google.firebase.database.Exclude
+import com.google.firebase.database.ServerValue
 
-data class Messages(val loginUserOwner:String? = null, val textMessage:String? = null, val timeSend:Timestamp? = null) {
+class Messages(val loginUserOwner:String? = null, val textMessage:String? = null, val timeSend: Any? = null) {
+
+    var createdTimestamp:Any? = timeSend
+        set(value) {
+            field = ServerValue.TIMESTAMP
+        }
+        @Exclude
+        get() {
+            if(timeSend == null){
+                return 0
+            } else {
+                return timeSend as Long
+            }
+        }
 }

@@ -21,6 +21,7 @@ class SearchUser(val searchView: ISearchUserView) : ISearchUser {
     override fun userSearch(phoneNumber: String) {
         ref.child("Users").orderByChild("phoneNumber").equalTo(phoneNumber).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                Log.w("SEARCH", dataSnapshot.children.count().toString())
                 if(dataSnapshot.children.count() == 0) {
                     searchView.searchUserError("Empty!")
                 }

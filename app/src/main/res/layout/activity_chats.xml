@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/drawLayout"
     tools:context=".ChatsActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,9 +12,9 @@
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/toolbar"
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             app:layout_constraintEnd_toEndOf="parent"
@@ -27,52 +26,65 @@
                 android:layout_height="match_parent">
 
                 <LinearLayout
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
+                    android:id="@+id/focusTest"
                     android:layout_width="0px"
                     android:layout_height="0px"
-                    android:id="@+id/focusTest"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:descendantFocusability="beforeDescendants"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:orientation="horizontal"
-                    android:descendantFocusability="beforeDescendants"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <EditText
                     android:id="@+id/editSearchPhoneNumberUser"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:hint="search user"
                     android:inputType="phone"
+                    app:layout_constraintEnd_toStartOf="@id/butSearchUser"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/butSearchUser">
+                    app:layout_constraintTop_toTopOf="parent">
 
                 </EditText>
 
-            <ImageButton
-                android:id="@+id/butSearchUser"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:src="@drawable/button_search"
-                android:layout_margin="10dp"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                <ImageButton
+                    android:id="@+id/butSearchUser"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/button_search"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-            </ImageButton>
+                </ImageButton>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.appcompat.widget.Toolbar>
+
+        <TextView
+            android:id="@+id/textInfoSearch"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:paddingTop="50dp"
+            android:text="введите номер телефона"
+            android:textAlignment="center"
+            android:textSize="18dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        </TextView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewChats"
             android:layout_width="match_parent"
-            android:focusableInTouchMode="true"
-            android:focusable="true"
             android:layout_height="0dp"
             android:layout_margin="10dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -83,15 +95,14 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:id="@+id/navView"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
         android:focusableInTouchMode="true"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/nav_drawer_menu"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true">
-
+        app:menu="@menu/nav_drawer_menu">
     </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

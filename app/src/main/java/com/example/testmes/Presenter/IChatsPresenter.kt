@@ -1,5 +1,5 @@
 package com.example.testmes.Presenter
 
 interface IChatsPresenter {
-    fun loadingChats()
+    fun loadingChats(loginCurrentUser:String)
 }

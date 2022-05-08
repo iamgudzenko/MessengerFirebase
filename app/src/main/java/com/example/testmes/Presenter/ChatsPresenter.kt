@@ -12,13 +12,12 @@ class ChatsPresenter (val chatsView: ChatsView, val activity: Activity) : IChats
     val database = FirebaseDatabase.getInstance()
     var ref = database.reference
 
-    override fun loadingChats() {
+    override fun loadingChats(loginCurrentUser:String) {
         ref = FirebaseDatabase.getInstance().reference
-        ref.child("Users").child(auth.currentUser?.uid.toString()).child("Chats").addValueEventListener(object : ValueEventListener {
+        ref.child("Chats").child(loginCurrentUser).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (ds in snapshot.children) {
                     val chat: Chats? = ds.getValue(Chats::class.java)
-                    Log.w("CHAT ID", chat?.loginUserChatWith.toString())
                     chatsView.listChatsUser(chat)
                 }
             }

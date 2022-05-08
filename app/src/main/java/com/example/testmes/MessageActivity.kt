@@ -16,6 +16,7 @@ class MessageActivity : AppCompatActivity(), IMessageView {
     lateinit var messagePresenter: IMessagesPresenter
     private lateinit var binding: ActivityMessageBinding
     lateinit var adapter: MessageAdapter
+    lateinit var loginUserCurrent: String
     var messagesChatUser: MutableList<Messages?> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,32 +24,35 @@ class MessageActivity : AppCompatActivity(), IMessageView {
         binding = ActivityMessageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val loginUserChatWith = intent.getSerializableExtra("loginUserChatWith")
+        val loginUserChatWith = intent.getSerializableExtra("loginUserChatWith").toString()
+        loginUserCurrent = intent.getSerializableExtra("loginUserCurrent").toString()
+
         messagePresenter = MessagesPresenter(this)
-        messagePresenter.loadingMessages(loginUserChatWith.toString())
+        messagePresenter.loadingMessages(loginUserChatWith, loginUserCurrent)
 
         binding.butSendMessage.setOnClickListener {
-            messagePresenter.sendMessage(loginUserChatWith.toString(), "kisa", binding.editTextMessage.text.toString())
+            messagePresenter.sendMessage(loginUserChatWith, loginUserCurrent, binding.editTextMessage.text.toString())
             binding.editTextMessage.setText("")
         }
 
     }
 
     override fun loadingMessagesSuccess(listMessage: MutableList<Messages>) {
-        Log.w("MESS", listMessage[3].textMessage.toString())
         messagesChatUser = listMessage.toMutableList()
-        Log.w("MESS", messagesChatUser[3]?.textMessage.toString())
-
         adapter = MessageAdapter()
-
         adapter.messages = messagesChatUser
+        adapter.userCurrentLogin = loginUserCurrent
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerViewMessages.layoutManager = layoutManager
         binding.recyclerViewMessages.adapter = adapter
-        binding.recyclerViewMessages.scrollToPosition(adapter.getItemCount() - 1);
+        binding.recyclerViewMessages.scrollToPosition(adapter.getItemCount() - 1)
     }
 
     override fun loadingMessagesError(message: String) {
+        Toast.makeText(this@MessageActivity, "Error: $message", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun sendMessagesError(message: String) {
         Toast.makeText(this@MessageActivity, "Error: $message", Toast.LENGTH_SHORT).show()
     }
 }

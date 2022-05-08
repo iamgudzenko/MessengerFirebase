@@ -5,4 +5,5 @@ import com.example.testmes.Model.Messages
 interface IMessageView {
     fun loadingMessagesSuccess(listMessage: MutableList<Messages>)
     fun loadingMessagesError(message:String)
+    fun sendMessagesError(message:String)
 }

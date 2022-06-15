@@ -11,6 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="15dp"
+        android:text="Введите шесть цифр из смс"
+        android:textAlignment="center"
         android:id="@+id/textInfoOtp">
 
     </TextView>
@@ -23,7 +25,7 @@
 
     </EditText>
     <Button
-        android:layout_width="300dp"
+        android:layout_width="200dp"
         android:layout_height="50dp"
         android:text="подтвердить"
         android:id="@+id/butOtpExam">

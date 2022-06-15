@@ -23,12 +23,15 @@ class MessageActivity : AppCompatActivity(), IMessageView {
         super.onCreate(savedInstanceState)
         binding = ActivityMessageBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        getSupportActionBar()?.hide()
 
         val loginUserChatWith = intent.getSerializableExtra("loginUserChatWith").toString()
         loginUserCurrent = intent.getSerializableExtra("loginUserCurrent").toString()
+        binding.loginUserToolBar.setText(loginUserChatWith)
 
         messagePresenter = MessagesPresenter(this)
         messagePresenter.loadingMessages(loginUserChatWith, loginUserCurrent)
+        messagePresenter.readingMessages(loginUserChatWith, loginUserCurrent)
 
         binding.butSendMessage.setOnClickListener {
             messagePresenter.sendMessage(loginUserChatWith, loginUserCurrent, binding.editTextMessage.text.toString())
@@ -46,6 +49,7 @@ class MessageActivity : AppCompatActivity(), IMessageView {
         binding.recyclerViewMessages.layoutManager = layoutManager
         binding.recyclerViewMessages.adapter = adapter
         binding.recyclerViewMessages.scrollToPosition(adapter.getItemCount() - 1)
+
     }
 
     override fun loadingMessagesError(message: String) {
@@ -54,5 +58,10 @@ class MessageActivity : AppCompatActivity(), IMessageView {
 
     override fun sendMessagesError(message: String) {
         Toast.makeText(this@MessageActivity, "Error: $message", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onBackPressed() {
+        finish()
+        super.onBackPressed()
     }
 }

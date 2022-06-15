@@ -6,6 +6,54 @@
     android:layout_height="match_parent"
     tools:context=".MessageActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolBarMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/purple_200"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/user"
+                android:id="@+id/iconUser"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+            </ImageView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:id="@+id/loginUserToolBar"
+                android:textColor="@color/white"
+                android:textSize="18dp"
+                android:text="LoginUser"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/statusUser"
+                app:layout_constraintStart_toEndOf="@id/iconUser">
+
+            </TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/statusUser"
+                android:layout_marginLeft="15dp"
+                android:text="status User"
+                app:layout_constraintTop_toBottomOf="@id/loginUserToolBar"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iconUser">
+
+            </TextView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/sendMessageLayout"
         android:layout_width="match_parent"
@@ -24,6 +72,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toRightOf="@id/editTextMessage"
             app:layout_constraintTop_toTopOf="parent">
+
         </ImageButton>
 
 
@@ -37,6 +86,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/butSendMessage"
             app:layout_constraintStart_toStartOf="parent">
+
         </EditText>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -46,7 +96,7 @@
         android:layout_height="0dp"
         android:layout_marginHorizontal="10dp"
         app:layout_constraintBottom_toTopOf="@id/sendMessageLayout"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolBarMessage"
         app:layout_constraintVertical_bias="1.0"
         tools:layout_editor_absoluteX="73dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

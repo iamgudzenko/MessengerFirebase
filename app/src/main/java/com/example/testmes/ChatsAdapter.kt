@@ -40,6 +40,10 @@ class ChatsAdapter(
             userLoginChats.text = chat!!.loginUserChatWith
             lastMessageChats.text = chat.listMessages.last().textMessage
             photoImageView.setImageResource(R.drawable.user)
+            if(chat.countUnreadMess.toString() != "0") {
+                stateMessage.setVisibility(View.VISIBLE)
+                stateMessage.text = chat.countUnreadMess.toString()
+            }
         }
     }
 

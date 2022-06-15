@@ -28,6 +28,7 @@ class MessageActivity : AppCompatActivity(), IMessageView {
         val loginUserChatWith = intent.getSerializableExtra("loginUserChatWith").toString()
         loginUserCurrent = intent.getSerializableExtra("loginUserCurrent").toString()
         binding.loginUserToolBar.setText(loginUserChatWith)
+        //kfjdkfgdl
 
         messagePresenter = MessagesPresenter(this)
         messagePresenter.loadingMessages(loginUserChatWith, loginUserCurrent)
